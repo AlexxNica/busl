@@ -3,8 +3,9 @@ package busltee
 import (
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 var out io.Writer
@@ -13,7 +14,7 @@ var out io.Writer
 func OpenLogs(logFile string) {
 	out = output(logFile)
 
-	log.SetOutput(out)
+	logrus.SetOutput(out)
 }
 
 // CloseLogs closes an open log file
