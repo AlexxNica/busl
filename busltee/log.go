@@ -14,7 +14,6 @@ func OpenLogs(logFile string) {
 	out = output(logFile)
 
 	log.SetOutput(out)
-	log.SetFlags(0)
 }
 
 // CloseLogs closes an open log file
