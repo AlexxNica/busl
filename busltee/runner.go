@@ -25,7 +25,6 @@ type Config struct {
 	SleepDuration time.Duration
 	URL           string
 	Args          []string
-	LogPrefix     string
 	LogFile       string
 	RequestID     string
 	Verbose       bool
