@@ -28,7 +28,7 @@ func main() {
 		rollbar.ServerRoot = "github.com/heroku/busl"
 	}
 
-	busltee.OpenLogs(publisherConf.LogFile, publisherConf.LogPrefix)
+	busltee.OpenLogs(publisherConf.LogFile)
 	defer busltee.CloseLogs()
 
 	if exitCode := busltee.Run(publisherConf.URL, publisherConf.Args, publisherConf); exitCode != 0 {
@@ -55,7 +55,6 @@ func parseFlags() (*cmdConfig, *busltee.Config, error) {
 	flag.Float64Var(&publisherConf.Timeout, "connect-timeout", 1, "max number of seconds to connect to busl URL")
 
 	// Logging related flags
-	flag.StringVar(&publisherConf.LogPrefix, "log-prefix", "", "log prefix")
 	flag.StringVar(&publisherConf.LogFile, "log-file", "", "log file")
 	flag.StringVar(&publisherConf.RequestID, "request-id", "", "request id")
 

@@ -10,10 +10,9 @@ import (
 var out io.Writer
 
 // OpenLogs configures the log file
-func OpenLogs(logFile, logPrefix string) {
+func OpenLogs(logFile string) {
 	out = output(logFile)
 
-	log.SetPrefix(logPrefix + " ")
 	log.SetOutput(out)
 	log.SetFlags(0)
 }
