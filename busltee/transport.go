@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Sirupsen/logrus"
 )
 
 var ErrTooManyRetries = errors.New("Reached max retries")

@@ -9,6 +9,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "VYvyVPooYXiO6gqwCGkPPK5vCzk=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "3d4380f53a34dcdc95f0c1db702615992b38d9a4",
+			"revisionTime": "2017-06-20T14:45:10Z"
+		},
+		{
 			"checksumSHA1": "S+kZB+E4P+VhEzVhGTGZYWt0UkY=",
 			"path": "github.com/braintree/manners",
 			"revision": "0cd5a1d1e1ea392cf99fb8c3a1780955f3eb4a14"
@@ -55,12 +61,6 @@
 			"comment": "v0.0.1-2-g2e6f5f3",
 			"path": "github.com/ogier/pflag",
 			"revision": "2e6f5f3f0c40ab9cb459742296f6a2aaab1fd5dc"
-		},
-		{
-			"checksumSHA1": "/YsxkUA+LSSCvK4zVU7Oa3s0470=",
-			"path": "github.com/sirupsen/logrus",
-			"revision": "3d4380f53a34dcdc95f0c1db702615992b38d9a4",
-			"revisionTime": "2017-06-20T14:45:10Z"
 		},
 		{
 			"checksumSHA1": "xrMX4lJ/arfx6PnME/lLgaecfgE=",
