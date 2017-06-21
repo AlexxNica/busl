@@ -57,10 +57,22 @@
 			"revision": "2e6f5f3f0c40ab9cb459742296f6a2aaab1fd5dc"
 		},
 		{
+			"checksumSHA1": "/YsxkUA+LSSCvK4zVU7Oa3s0470=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "3d4380f53a34dcdc95f0c1db702615992b38d9a4",
+			"revisionTime": "2017-06-20T14:45:10Z"
+		},
+		{
 			"checksumSHA1": "xrMX4lJ/arfx6PnME/lLgaecfgE=",
 			"comment": "v1.0",
 			"path": "github.com/stretchr/testify/assert",
 			"revision": "232e8563676cd15c3a36ba5e675ad4312ac4cb11"
+		},
+		{
+			"checksumSHA1": "Tkb1hBdBWeO7SGjixS2Hm48F6+s=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a",
+			"revisionTime": "2017-06-14T06:48:48Z"
 		}
 	],
 	"rootPath": "github.com/heroku/busl"

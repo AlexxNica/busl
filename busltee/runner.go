@@ -5,7 +5,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -13,6 +12,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Config holds the runner configuration
@@ -37,21 +38,21 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 	done := post(url, reader, conf)
 
 	if err := run(args, writer, writer); err != nil {
-		log.Printf("count#busltee.exec.error=1 error=%v", err.Error())
+		logrus.WithFields(logrus.Fields{"count#busltee.exec.error": 1}).Error(err)
 		exitCode = exitStatus(err)
 	}
 
 	select {
 	case <-done:
 	case <-time.After(time.Second):
-		log.Printf("count#busltee.exec.upload.timeout=1")
+		logrus.WithFields(logrus.Fields{"count#busltee.exec.upload.timeout": 1}).Warn("OK")
 	}
 
 	return exitCode
 }
 
 func monitor(subject string, ts time.Time) {
-	log.Printf("%s.time time=%f", subject, time.Now().Sub(ts).Seconds())
+	logrus.WithFields(logrus.Fields{"time": time.Now().Sub(ts).Seconds()}).Warnf("%s.time", subject)
 }
 
 func post(url string, reader io.Reader, conf *Config) chan struct{} {
@@ -59,11 +60,11 @@ func post(url string, reader io.Reader, conf *Config) chan struct{} {
 
 	go func() {
 		if err := stream(url, reader, conf); err != nil {
-			log.Printf("count#busltee.stream.error=1 error=%v", err.Error())
+			logrus.WithFields(logrus.Fields{"count#busltee.stream.error": 1}).Error(err)
 			// Prevent writes from blocking.
 			io.Copy(ioutil.Discard, reader)
 		} else {
-			log.Printf("count#busltee.stream.success=1")
+			logrus.WithFields(logrus.Fields{"count#busltee.stream.success": 1}).Warn("OK")
 		}
 		close(done)
 	}()
@@ -76,7 +77,7 @@ func stream(url string, stdin io.Reader, conf *Config) (err error) {
 		if err = streamNoRetry(url, stdin, conf); !isTimeout(err) {
 			return err
 		}
-		log.Printf("count#busltee.stream.retry")
+		logrus.WithFields(logrus.Fields{"count#busltee.stream.retry": 1}).Warn("OK")
 	}
 	return err
 }
@@ -87,7 +88,7 @@ func streamNoRetry(url string, stdin io.Reader, conf *Config) error {
 	defer monitor("busltee.stream", time.Now())
 
 	if url == "" {
-		log.Printf("count#busltee.stream.missingurl")
+		logrus.WithFields(logrus.Fields{"count#busltee.stream.missingurl": 1}).Warn("OK")
 		return errMissingURL
 	}
 
