@@ -28,11 +28,13 @@ type Config struct {
 	LogPrefix     string
 	LogFile       string
 	RequestID     string
+	Verbose       bool
 }
 
 // Run creates the stdin listener and forwards logs to URI
 func Run(url string, args []string, conf *Config) (exitCode int) {
 	defer monitor("busltee.busltee", time.Now())
+	setupLog(conf)
 
 	reader, writer := io.Pipe()
 	done := post(url, reader, conf)
@@ -49,6 +51,15 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 	}
 
 	return exitCode
+}
+
+func setupLog(conf *Config) {
+	if conf.Verbose {
+		logrus.SetLevel(logrus.InfoLevel)
+		return
+	}
+
+	logrus.SetLevel(logrus.WarnLevel)
 }
 
 func monitor(subject string, ts time.Time) {
@@ -216,6 +227,7 @@ func deliverSignals(cmd *exec.Cmd) {
 	signal.Notify(sigc)
 	go func() {
 		s := <-sigc
+		logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
 		cmd.Process.Signal(s)
 	}()
 }
