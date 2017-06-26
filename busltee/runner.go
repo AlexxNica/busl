@@ -226,8 +226,14 @@ func deliverSignals(cmd *exec.Cmd) {
 	signal.Notify(sigc)
 	go func() {
 		s := <-sigc
-		logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
-		cmd.Process.Signal(s)
+
+		switch s {
+		case syscall.SIGPIPE:
+			logrus.WithFields(logrus.Fields{"count#busltee.signal.sigpipe": 1}).Info("OK")
+		default:
+			logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
+			cmd.Process.Signal(s)
+		}
 	}()
 }
 
