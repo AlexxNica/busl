@@ -51,10 +51,12 @@
 			"revision": "90765b9b92e3aef6da4b217586e9b64e0aee8378"
 		},
 		{
-			"checksumSHA1": "CD+EtSm6948GZ8+xmCRIZX8UcX0=",
-			"comment": "v0.3.0",
+			"checksumSHA1": "iYRTRvzmgdUbAMQVGmRj0ysK+KQ=",
 			"path": "github.com/heroku/rollbar",
-			"revision": "197e8a4fd165c96afe325b2297cf3bcaa5b9a6b4"
+			"revision": "aa40a4750d960d4173026078a04f2991b34d9442",
+			"revisionTime": "2015-02-17T20:28:13Z",
+			"version": "v0.4.2",
+			"versionExact": "v0.4.2"
 		},
 		{
 			"checksumSHA1": "C1k8Ky5xbqUBYMo6aesBq/yU2cQ=",
