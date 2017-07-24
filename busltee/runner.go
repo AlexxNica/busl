@@ -234,7 +234,9 @@ func deliverSignals(cmd *exec.Cmd) {
 func wait(cmd *exec.Cmd) (*os.ProcessState, error) {
 	pgid, err := syscall.Getpgid(cmd.Process.Pid)
 	if err == nil {
-		defer syscall.Kill(-pgid, syscall.SIGTERM)
+		defer func() {
+			syscall.Kill(-pgid, syscall.SIGTERM)
+		}()
 	}
 
 	return cmd.Process.Wait()
