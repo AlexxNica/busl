@@ -54,7 +54,7 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 
 func setupLog(conf *Config) {
 	if conf.Verbose {
-		logrus.SetLevel(logrus.InfoLevel)
+		logrus.SetLevel(logrus.DebugLevel)
 		return
 	}
 
