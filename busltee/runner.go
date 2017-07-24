@@ -235,6 +235,10 @@ func wait(cmd *exec.Cmd) (*os.ProcessState, error) {
 	pgid, err := syscall.Getpgid(cmd.Process.Pid)
 	if err == nil {
 		defer func() {
+			logrus.WithFields(logrus.Fields{
+				"pgid": pgid,
+				"pid":  cmd.Process.Pid,
+			}).Debug("killing process group")
 			syscall.Kill(-pgid, syscall.SIGTERM)
 		}()
 	}
