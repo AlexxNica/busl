@@ -241,11 +241,13 @@ func wait(cmd *exec.Cmd) (*os.ProcessState, error) {
 }
 
 func isTimeout(err error) bool {
+	err = errors.Cause(err)
 	e, ok := err.(net.Error)
 	return ok && e.Timeout()
 }
 
 func exitStatus(err error) int {
+	err = errors.Cause(err)
 	if exit, ok := err.(*exec.ExitError); ok {
 		if status, ok := exit.Sys().(syscall.WaitStatus); ok {
 			return status.ExitStatus()
