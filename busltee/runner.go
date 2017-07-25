@@ -156,11 +156,11 @@ func run(args []string, stdout, stderr io.WriteCloser) error {
 
 	errCh, err := attachCmd(cmd, io.MultiWriter(stdout, os.Stdout), io.MultiWriter(stderr, os.Stderr))
 	if err != nil {
-		return err
+		return errors.Wrap(err, "attach failed")
 	}
 
 	if err := cmd.Start(); err != nil {
-		return err
+		return errors.Wrap(err, "start failed")
 	}
 
 	// Catch any signals sent to busltee, and pass those along.
@@ -175,12 +175,12 @@ func run(args []string, stdout, stderr io.WriteCloser) error {
 	}
 
 	if err != nil {
-		return err
+		return errors.Wrap(err, "wait failed")
 	} else if !state.Success() {
 		return &exec.ExitError{ProcessState: state}
 	}
 
-	return copyErr
+	return errors.Wrap(copyErr, "copy failed")
 }
 
 func attachCmd(cmd *exec.Cmd, stdout, stderr io.Writer) (<-chan error, error) {
