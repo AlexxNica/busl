@@ -226,8 +226,12 @@ func deliverSignals(cmd *exec.Cmd) {
 	signal.Notify(sigc)
 	go func() {
 		s := <-sigc
+		switch s {
+		case syscall.SIGPIPE:
+		default:
 		logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
 		cmd.Process.Signal(s)
+		}
 	}()
 }
 
