@@ -2,7 +2,6 @@ package busltee
 
 import (
 	"crypto/tls"
-	"errors"
 	"io"
 	"io/ioutil"
 	"net"
@@ -13,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -156,11 +156,11 @@ func run(args []string, stdout, stderr io.WriteCloser) error {
 
 	errCh, err := attachCmd(cmd, io.MultiWriter(stdout, os.Stdout), io.MultiWriter(stderr, os.Stderr))
 	if err != nil {
-		return err
+		return errors.Wrap(err, "attach failed")
 	}
 
 	if err := cmd.Start(); err != nil {
-		return err
+		return errors.Wrap(err, "start failed")
 	}
 
 	// Catch any signals sent to busltee, and pass those along.
@@ -175,12 +175,12 @@ func run(args []string, stdout, stderr io.WriteCloser) error {
 	}
 
 	if err != nil {
-		return err
+		return errors.Wrap(err, "wait failed")
 	} else if !state.Success() {
 		return &exec.ExitError{ProcessState: state}
 	}
 
-	return copyErr
+	return errors.Wrap(copyErr, "copy failed")
 }
 
 func attachCmd(cmd *exec.Cmd, stdout, stderr io.Writer) (<-chan error, error) {
@@ -247,11 +247,13 @@ func wait(cmd *exec.Cmd) (*os.ProcessState, error) {
 }
 
 func isTimeout(err error) bool {
+	err = errors.Cause(err)
 	e, ok := err.(net.Error)
 	return ok && e.Timeout()
 }
 
 func exitStatus(err error) int {
+	err = errors.Cause(err)
 	if exit, ok := err.(*exec.ExitError); ok {
 		if status, ok := exit.Sys().(syscall.WaitStatus); ok {
 			return status.ExitStatus()
