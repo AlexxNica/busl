@@ -54,7 +54,7 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 
 func setupLog(conf *Config) {
 	if conf.Verbose {
-		logrus.SetLevel(logrus.InfoLevel)
+		logrus.SetLevel(logrus.DebugLevel)
 		return
 	}
 
@@ -234,7 +234,13 @@ func deliverSignals(cmd *exec.Cmd) {
 func wait(cmd *exec.Cmd) (*os.ProcessState, error) {
 	pgid, err := syscall.Getpgid(cmd.Process.Pid)
 	if err == nil {
-		defer syscall.Kill(-pgid, syscall.SIGTERM)
+		defer func() {
+			logrus.WithFields(logrus.Fields{
+				"pgid": pgid,
+				"pid":  cmd.Process.Pid,
+			}).Debug("killing process group")
+			syscall.Kill(-pgid, syscall.SIGTERM)
+		}()
 	}
 
 	return cmd.Process.Wait()
