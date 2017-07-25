@@ -2,7 +2,6 @@ package busltee
 
 import (
 	"crypto/tls"
-	"errors"
 	"io"
 	"io/ioutil"
 	"net"
@@ -13,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 

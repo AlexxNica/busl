@@ -57,6 +57,14 @@
 			"revision": "2e6f5f3f0c40ab9cb459742296f6a2aaab1fd5dc"
 		},
 		{
+			"checksumSHA1": "ynJSWoF6v+3zMnh9R0QmmG6iGV8=",
+			"path": "github.com/pkg/errors",
+			"revision": "645ef00459ed84a119197bfb8d8205042c6df63d",
+			"revisionTime": "2016-09-29T01:48:01Z",
+			"version": "v0.8.0",
+			"versionExact": "v0.8.0"
+		},
+		{
 			"checksumSHA1": "VHULZdEZKBxJvlZnlhX7Ug19lgY=",
 			"path": "github.com/sirupsen/logrus",
 			"revision": "202f25545ea4cf9b191ff7f846df5d87c9382c2b",
