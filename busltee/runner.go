@@ -266,6 +266,9 @@ func exitStatus(err error) int {
 	err = errors.Cause(err)
 	if exit, ok := err.(*exec.ExitError); ok {
 		if status, ok := exit.Sys().(syscall.WaitStatus); ok {
+			logrus.WithFields(logrus.Fields{
+				"exit_status": status.ExitStatus(),
+			}).Debug("got exit status")
 			return status.ExitStatus()
 		}
 	}
