@@ -232,6 +232,7 @@ func deliverSignals(cmd *exec.Cmd) {
 		}).Debug("received signal")
 
 		switch s {
+		case syscall.SIGCHLD:
 		case syscall.SIGPIPE:
 		default:
 			logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
