@@ -84,7 +84,7 @@ func (t *Transport) runRequest(req *http.Request) (*http.Response, error) {
 		"count#busltee.streamer.start": 1,
 		"request_id":                   req.Header.Get("Request-Id"),
 		"url":                          req.URL,
-	}).Warn("OK")
+	}).Warn()
 	res, err := t.Transport.RoundTrip(newReq)
 	newReq.Body.Close()
 	if res != nil {
@@ -96,7 +96,7 @@ func (t *Transport) runRequest(req *http.Request) (*http.Response, error) {
 		"url":                        req.URL,
 		"err":                        err,
 		"status":                     statusCode,
-	}).Warn("OK")
+	}).Warn()
 	return res, err
 }
 
