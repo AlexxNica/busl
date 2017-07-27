@@ -46,7 +46,7 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 	select {
 	case <-done:
 	case <-time.After(time.Second):
-		logrus.WithFields(logrus.Fields{"count#busltee.exec.upload.timeout": 1}).Warn("OK")
+		logrus.WithFields(logrus.Fields{"count#busltee.exec.upload.timeout": 1}).Warn()
 	}
 
 	return exitCode
@@ -74,7 +74,7 @@ func post(url string, reader io.Reader, conf *Config) chan struct{} {
 			// Prevent writes from blocking.
 			io.Copy(ioutil.Discard, reader)
 		} else {
-			logrus.WithFields(logrus.Fields{"count#busltee.stream.success": 1}).Warn("OK")
+			logrus.WithFields(logrus.Fields{"count#busltee.stream.success": 1}).Warn()
 		}
 		close(done)
 	}()
@@ -87,7 +87,7 @@ func stream(url string, stdin io.Reader, conf *Config) (err error) {
 		if err = streamNoRetry(url, stdin, conf); !isTimeout(err) {
 			return err
 		}
-		logrus.WithFields(logrus.Fields{"count#busltee.stream.retry": 1}).Warn("OK")
+		logrus.WithFields(logrus.Fields{"count#busltee.stream.retry": 1}).Warn()
 	}
 	return err
 }
@@ -98,7 +98,7 @@ func streamNoRetry(url string, stdin io.Reader, conf *Config) error {
 	defer monitor("busltee.stream", time.Now())
 
 	if url == "" {
-		logrus.WithFields(logrus.Fields{"count#busltee.stream.missingurl": 1}).Warn("OK")
+		logrus.WithFields(logrus.Fields{"count#busltee.stream.missingurl": 1}).Warn()
 		return errMissingURL
 	}
 
@@ -235,7 +235,7 @@ func deliverSignals(cmd *exec.Cmd) {
 		case syscall.SIGCHLD:
 		case syscall.SIGPIPE:
 		default:
-			logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info("OK")
+			logrus.WithFields(logrus.Fields{"busltee.signal.deliver": s}).Info()
 			cmd.Process.Signal(s)
 		}
 	}()
