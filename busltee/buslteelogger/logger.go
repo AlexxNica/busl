@@ -31,5 +31,9 @@ func WithFields(f logrus.Fields) *logrus.Entry {
 
 // The default logging fields
 func logFields() *logrus.Entry {
-	return logrus.WithFields(logrus.Fields{})
+	if l == nil {
+		// Logging is not configured
+		return logrus.WithFields(logrus.Fields{})
+	}
+	return logrus.WithFields(l.defaultFields)
 }

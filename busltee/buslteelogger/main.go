@@ -9,14 +9,15 @@ import (
 )
 
 type logger struct {
-	out io.Writer
+	out           io.Writer
+	defaultFields logrus.Fields
 }
 
 var l *logger
 
 // OpenLogs configures the log file
 func OpenLogs(logFile string) {
-	l = &logger{output(logFile)}
+	l = &logger{output(logFile), logrus.Fields{}}
 	logrus.SetOutput(l.out)
 }
 
