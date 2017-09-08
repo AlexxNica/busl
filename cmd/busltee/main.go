@@ -14,6 +14,7 @@ import (
 type cmdConfig struct {
 	RollbarEnvironment string
 	RollbarToken       string
+	LogFields          buslteelogger.LogFields
 }
 
 func main() {
@@ -29,7 +30,7 @@ func main() {
 		rollbar.ServerRoot = "github.com/heroku/busl"
 	}
 
-	buslteelogger.ConfigureLogs(publisherConf.LogFile)
+	buslteelogger.ConfigureLogs(publisherConf.LogFile, cmdConf.LogFields)
 	defer buslteelogger.CloseLogs()
 
 	if exitCode := busltee.Run(publisherConf.URL, publisherConf.Args, publisherConf); exitCode != 0 {
@@ -58,6 +59,7 @@ func parseFlags() (*cmdConfig, *busltee.Config, error) {
 	// Logging related flags
 	flag.StringVar(&publisherConf.LogFile, "log-file", "", "log file")
 	flag.StringVar(&publisherConf.RequestID, "request-id", "", "request id")
+	flag.Var(&cmdConf.LogFields, "log-field", "List of additional logging fields, of the format key=value")
 
 	if flag.Parse(); len(flag.Args()) < 2 {
 		return nil, nil, errors.New("insufficient args")

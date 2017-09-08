@@ -1,12 +1,31 @@
 package buslteelogger
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
+
+// LogFields stores all the custom fields
+type LogFields []string
+
+func (l *LogFields) String() string {
+	return fmt.Sprintf("%q", *l)
+}
+
+// Set is used by the flag package to set new values
+func (l *LogFields) Set(value string) error {
+	s := strings.Split(value, "=")
+	if len(s) != 2 {
+		return fmt.Errorf("unexpected log field %q. Format expected: key=value", value)
+	}
+	*l = append(*l, value)
+	return nil
+}
 
 type logger struct {
 	out           io.Writer
@@ -16,8 +35,14 @@ type logger struct {
 var l *logger
 
 // ConfigureLogs configures the log file
-func ConfigureLogs(logFile string) {
-	l = &logger{output(logFile), logrus.Fields{}}
+func ConfigureLogs(logFile string, fields LogFields) {
+	lf := logrus.Fields{}
+	for _, v := range fields {
+		s := strings.Split(v, "=")
+		lf[s[0]] = s[1]
+	}
+
+	l = &logger{output(logFile), lf}
 	logrus.SetOutput(l.out)
 }
 
