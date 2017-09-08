@@ -29,7 +29,7 @@ func main() {
 		rollbar.ServerRoot = "github.com/heroku/busl"
 	}
 
-	buslteelogger.OpenLogs(publisherConf.LogFile)
+	buslteelogger.ConfigureLogs(publisherConf.LogFile)
 	defer buslteelogger.CloseLogs()
 
 	if exitCode := busltee.Run(publisherConf.URL, publisherConf.Args, publisherConf); exitCode != 0 {

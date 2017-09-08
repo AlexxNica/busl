@@ -15,8 +15,8 @@ type logger struct {
 
 var l *logger
 
-// OpenLogs configures the log file
-func OpenLogs(logFile string) {
+// ConfigureLogs configures the log file
+func ConfigureLogs(logFile string) {
 	l = &logger{output(logFile), logrus.Fields{}}
 	logrus.SetOutput(l.out)
 }
