@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/heroku/busl/busltee"
+	"github.com/heroku/busl/busltee/buslteelogger"
 	"github.com/heroku/rollbar"
 	flag "github.com/ogier/pflag"
 )
@@ -28,8 +29,8 @@ func main() {
 		rollbar.ServerRoot = "github.com/heroku/busl"
 	}
 
-	busltee.OpenLogs(publisherConf.LogFile)
-	defer busltee.CloseLogs()
+	buslteelogger.OpenLogs(publisherConf.LogFile)
+	defer buslteelogger.CloseLogs()
 
 	if exitCode := busltee.Run(publisherConf.URL, publisherConf.Args, publisherConf); exitCode != 0 {
 		os.Exit(exitCode)

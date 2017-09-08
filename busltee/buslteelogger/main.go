@@ -1,4 +1,4 @@
-package busltee
+package buslteelogger
 
 import (
 	"io"
@@ -13,7 +13,6 @@ var out io.Writer
 // OpenLogs configures the log file
 func OpenLogs(logFile string) {
 	out = output(logFile)
-
 	logrus.SetOutput(out)
 }
 
