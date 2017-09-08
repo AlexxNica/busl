@@ -8,17 +8,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var out io.Writer
+type logger struct {
+	out io.Writer
+}
+
+var l *logger
 
 // OpenLogs configures the log file
 func OpenLogs(logFile string) {
-	out = output(logFile)
-	logrus.SetOutput(out)
+	l = &logger{output(logFile)}
+	logrus.SetOutput(l.out)
 }
 
 // CloseLogs closes an open log file
 func CloseLogs() {
-	if f, ok := out.(io.Closer); ok {
+	if f, ok := l.out.(io.Closer); ok {
 		f.Close()
 	}
 }
