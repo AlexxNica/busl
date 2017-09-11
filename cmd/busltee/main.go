@@ -45,7 +45,7 @@ func usage() {
 
 func parseFlags() (*cmdConfig, *busltee.Config, error) {
 	publisherConf := &busltee.Config{}
-	cmdConf := &cmdConfig{}
+	cmdConf := &cmdConfig{LogFields: make(buslteelogger.LogFields)}
 
 	cmdConf.RollbarEnvironment = os.Getenv("ROLLBAR_ENVIRONMENT")
 	cmdConf.RollbarToken = os.Getenv("ROLLBAR_TOKEN")

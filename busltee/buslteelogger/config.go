@@ -11,7 +11,7 @@ import (
 )
 
 // LogFields stores all the custom fields
-type LogFields []string
+type LogFields map[string]string
 
 func (l *LogFields) String() string {
 	return fmt.Sprintf("%q", *l)
@@ -19,11 +19,11 @@ func (l *LogFields) String() string {
 
 // Set is used by the flag package to set new values
 func (l *LogFields) Set(value string) error {
-	s := strings.SplitN(value, "=", 1)
+	s := strings.SplitN(value, "=", 2)
 	if len(s) != 2 {
 		return fmt.Errorf("unexpected log field %q. Format expected: key=value", value)
 	}
-	*l = append(*l, value)
+	(*l)[s[0]] = s[1]
 	return nil
 }
 
@@ -37,9 +37,8 @@ var l *logger
 // ConfigureLogs configures the log file
 func ConfigureLogs(logFile string, fields LogFields) {
 	lf := logrus.Fields{}
-	for _, v := range fields {
-		s := strings.SplitN(v, "=", 1)
-		lf[s[0]] = s[1]
+	for k, v := range fields {
+		lf[k] = v
 	}
 
 	l = &logger{output(logFile), lf}
