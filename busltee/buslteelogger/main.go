@@ -19,7 +19,7 @@ func (l *LogFields) String() string {
 
 // Set is used by the flag package to set new values
 func (l *LogFields) Set(value string) error {
-	s := strings.Split(value, "=")
+	s := strings.SplitN(value, "=", 1)
 	if len(s) != 2 {
 		return fmt.Errorf("unexpected log field %q. Format expected: key=value", value)
 	}
@@ -38,7 +38,7 @@ var l *logger
 func ConfigureLogs(logFile string, fields LogFields) {
 	lf := logrus.Fields{}
 	for _, v := range fields {
-		s := strings.Split(v, "=")
+		s := strings.SplitN(v, "=", 1)
 		lf[s[0]] = s[1]
 	}
 
