@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/heroku/busl/busltee"
-	"github.com/heroku/busl/busltee/buslteelogger"
 	"github.com/heroku/rollbar"
 	flag "github.com/ogier/pflag"
 )
@@ -14,7 +13,7 @@ import (
 type cmdConfig struct {
 	RollbarEnvironment string
 	RollbarToken       string
-	LogFields          buslteelogger.LogFields
+	LogFields          busltee.LogFields
 }
 
 func main() {
@@ -30,8 +29,8 @@ func main() {
 		rollbar.ServerRoot = "github.com/heroku/busl"
 	}
 
-	buslteelogger.ConfigureLogs(publisherConf.LogFile, cmdConf.LogFields)
-	defer buslteelogger.CloseLogs()
+	busltee.ConfigureLogs(publisherConf.LogFile, cmdConf.LogFields)
+	defer busltee.CloseLogs()
 
 	if exitCode := busltee.Run(publisherConf.URL, publisherConf.Args, publisherConf); exitCode != 0 {
 		os.Exit(exitCode)
@@ -45,7 +44,7 @@ func usage() {
 
 func parseFlags() (*cmdConfig, *busltee.Config, error) {
 	publisherConf := &busltee.Config{}
-	cmdConf := &cmdConfig{LogFields: make(buslteelogger.LogFields)}
+	cmdConf := &cmdConfig{LogFields: make(busltee.LogFields)}
 
 	cmdConf.RollbarEnvironment = os.Getenv("ROLLBAR_ENVIRONMENT")
 	cmdConf.RollbarToken = os.Getenv("ROLLBAR_TOKEN")

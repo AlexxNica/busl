@@ -1,4 +1,4 @@
-package buslteelogger
+package busltee
 
 import (
 	"fmt"
@@ -61,4 +61,33 @@ func output(logFile string) io.Writer {
 		return ioutil.Discard
 	}
 	return file
+}
+
+func logInfo(args ...interface{}) {
+	logFields().Info(args...)
+}
+
+func logError(args ...interface{}) {
+	logFields().Error(args...)
+}
+
+func logFatalf(s string, v ...interface{}) {
+	logFields().Fatalf(s, v...)
+}
+
+func logFatal(args ...interface{}) {
+	logFields().Fatal(args...)
+}
+
+func logWithFields(f logrus.Fields) *logrus.Entry {
+	return logFields().WithFields(f)
+}
+
+// The default logging fields
+func logFields() *logrus.Entry {
+	if l == nil {
+		// Logging is not configured
+		return logrus.WithFields(logrus.Fields{})
+	}
+	return logrus.WithFields(l.defaultFields)
 }
