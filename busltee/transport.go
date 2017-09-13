@@ -42,7 +42,7 @@ func (t *Transport) RoundTrip(req *http.Request) (res *http.Response, err error)
 		tee := io.TeeReader(req.Body, &broadcastingWriter{tmpFile, t.cond})
 		_, err := ioutil.ReadAll(tee)
 		if err != nil {
-			logrus.Fatal(err)
+			logFatal(err)
 		}
 	}()
 
@@ -80,7 +80,7 @@ func (t *Transport) runRequest(req *http.Request) (*http.Response, error) {
 	newReq, err := http.NewRequest(req.Method, req.URL.String(), bodyReader)
 	newReq.Header = req.Header
 
-	logrus.WithFields(logrus.Fields{
+	logWithFields(logrus.Fields{
 		"count#busltee.streamer.start": 1,
 		"request_id":                   req.Header.Get("Request-Id"),
 		"url":                          req.URL,
@@ -90,7 +90,7 @@ func (t *Transport) runRequest(req *http.Request) (*http.Response, error) {
 	if res != nil {
 		statusCode = res.StatusCode
 	}
-	logrus.WithFields(logrus.Fields{
+	logWithFields(logrus.Fields{
 		"count#busltee.streamer.end": 1,
 		"request_id":                 req.Header.Get("Request-Id"),
 		"url":                        req.URL,
