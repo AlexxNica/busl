@@ -24,9 +24,9 @@ func main() {
 	}
 
 	if cmdConf.RollbarToken != "" {
-		rollbar.Token = cmdConf.RollbarToken
-		rollbar.Environment = cmdConf.RollbarEnvironment
-		rollbar.ServerRoot = "github.com/heroku/busl"
+		rollbar.SetToken(cmdConf.RollbarToken)
+		rollbar.SetEnvironment(cmdConf.RollbarEnvironment)
+		rollbar.SetServerRoot("github.com/heroku/busl")
 	}
 
 	busltee.ConfigureLogs(publisherConf.LogFile, cmdConf.LogFields)
