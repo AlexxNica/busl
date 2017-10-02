@@ -56,6 +56,7 @@ func (s *Server) publish(w http.ResponseWriter, r *http.Request) {
 
 	if err == io.ErrUnexpectedEOF {
 		util.CountWithData("server.pub.read.eoferror", 1, "msg=%q request_id=%q", err, r.Header.Get("Request-Id"))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
