@@ -42,6 +42,7 @@ func ConfigureLogs(logFile string, fields LogFields) {
 	}
 
 	l = &logger{output(logFile), lf}
+	logrus.SetFormatter(logrus.StandardLogger().Formatter)
 	logrus.SetOutput(l.out)
 }
 
