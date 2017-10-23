@@ -45,7 +45,7 @@ func Run(url string, args []string, conf *Config) (exitCode int) {
 
 	select {
 	case <-done:
-	case <-time.After(time.Second):
+	case <-time.After(30 * time.Second):
 		logWithFields(logrus.Fields{"count#busltee.exec.upload.timeout": 1}).Warn()
 	}
 
