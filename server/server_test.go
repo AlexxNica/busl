@@ -85,6 +85,25 @@ func TestPubWithoutTransferEncoding(t *testing.T) {
 	assert.Equal(t, body, []byte("hello world"))
 }
 
+func TestSubClosedEmpty(t *testing.T) {
+	server := httptest.NewServer(baseServer.router())
+	uuid, _ := util.NewUUID()
+
+	registrar := broker.NewRedisRegistrar()
+	err := registrar.Register(uuid)
+	assert.Nil(t, err)
+	writer, err := broker.NewWriter(uuid)
+	assert.Nil(t, err)
+	writer.Close()
+
+	resp, err := http.Get(server.URL + "/streams/" + uuid)
+	assert.Nil(t, err)
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	assert.Equal(t, []byte{}, body)
+	assert.Equal(t, http.StatusNoContent, resp.StatusCode)
+}
+
 func TestPubSub(t *testing.T) {
 	server := httptest.NewServer(baseServer.router())
 	defer server.Close()
