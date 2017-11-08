@@ -94,7 +94,7 @@ func (s *Server) subscribe(w http.ResponseWriter, r *http.Request) {
 		handleError(w, r, err)
 		return
 	}
-	_, err = io.Copy(newWriteFlusher(w), rd)
+	n, err := io.Copy(newWriteFlusher(w), rd)
 
 	netErr, ok := err.(net.Error)
 	if ok && netErr.Timeout() {
@@ -105,6 +105,11 @@ func (s *Server) subscribe(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logError(r, err)
 	}
+	if n == 0 {
+		handleError(w, r, errNoContent)
+		return
+	}
+
 	util.CountWithData("server.sub.read.finish", 1, "msg=%q request_id=%q", err, r.Header.Get("Request-Id"))
 }
 

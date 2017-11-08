@@ -158,11 +158,6 @@ func (s *Server) newReader(w http.ResponseWriter, r *http.Request) (io.ReadClose
 		return nil, err
 	}
 
-	if broker.NoContent(rd, o) {
-		rd.Close()
-		return nil, errNoContent
-	}
-
 	var encoder encoders.Encoder
 	if r.Header.Get("Accept") == "text/event-stream" {
 		w.Header().Set("Content-Type", "text/event-stream")
