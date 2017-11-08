@@ -259,23 +259,6 @@ func readerDone(rd io.Reader) bool {
 	return done
 }
 
-// NoContent returns whether the channel already has content pushed or not
-func NoContent(rd io.Reader, offset int64) bool {
-	if !readerDone(rd) {
-		return false
-	}
-
-	conn := redisPool.Get()
-	defer conn.Close()
-
-	strlen, err := redis.Int64(conn.Do("STRLEN", rd.(*reader).channel.id()))
-	if err != nil {
-		return false
-	}
-
-	return offset > (strlen - 1)
-}
-
 // RenewExpiry renews the channel expiration
 func RenewExpiry(rd io.Reader) {
 	r, ok := rd.(*reader)

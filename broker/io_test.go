@@ -218,10 +218,6 @@ func TestRedisReadFromClosed(t *testing.T) {
 	// Reader done on a regular io.Reader should return false
 	// and not panic
 	assert.False(t, readerDone(strings.NewReader("hello")))
-
-	// NoContent should respond accordingly based on offset
-	assert.False(t, NoContent(r, 0))
-	assert.True(t, NoContent(r, 5))
 }
 
 func TestLen(t *testing.T) {
